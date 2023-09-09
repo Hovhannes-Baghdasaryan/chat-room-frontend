@@ -1,0 +1,21 @@
+@import 'styles/vars';
+@import 'styles/colors';
+
+.form {
+  min-width: 30%;
+  @extend %flex-column;
+  gap: 10px;
+
+  &__input {
+    padding: 10px;
+    border-radius: 4px;
+    border: none;
+  }
+
+  &__button {
+    background-color: $blue-dark;
+    color: $white-dark;
+    border-radius: 4px;
+    padding: 5px 10px;
+  }
+}

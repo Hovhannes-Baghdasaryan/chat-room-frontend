@@ -1,0 +1,12 @@
+@import 'styles/vars';
+@import 'styles/colors';
+
+.wrapper {
+  min-height: 100%;
+  background-color: $background-primary;
+
+  &__main {
+    padding-top: 15%;
+    @extend %flex-center;
+  }
+}

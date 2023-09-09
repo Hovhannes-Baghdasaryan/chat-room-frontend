@@ -1,3 +1,16 @@
+%flex-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+%flex-between-align {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 %flex-align {
   display: flex;
   align-items: center;
@@ -8,9 +21,20 @@
   flex-direction: column;
 }
 
+%flex-column-start-align {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 %flex-justify-center {
   display: flex;
   justify-content: center;
+}
+
+%flex-justify-between {
+  display: flex;
+  justify-content: space-between;
 }
 
 %flex-column-align-center {

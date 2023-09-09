@@ -1,0 +1,24 @@
+@import 'styles/vars';
+@import 'styles/colors';
+
+.wrapper {
+  padding: 15px 25px;
+  @extend %flex-between-align;
+  background-color: $background-secondary;
+
+  &__title {
+    color: $white-dark;
+  }
+
+  &__info {
+    color: $yellow-dark;
+    font-size: 18px;
+    padding-right: 60px;
+  }
+
+  &__button {
+    background-color: transparent;
+    color: $white-dark;
+    font-size: 18px;
+  }
+}
