@@ -2,14 +2,15 @@ import { FC, useEffect, useRef, useState } from 'react'
 import io, { Socket } from 'socket.io-client'
 
 import { MessageBox } from 'components'
+import { axiosInstance } from 'libraries'
 
 import { T_ChatRoomProps, T_Message } from './types'
 import styles from './ChatRoom.module.scss'
-import { axiosInstance } from 'libraries'
 
-const ChatRoom: FC<T_ChatRoomProps> = ({ username, onLogoutClickHandler }) => {
+const ChatRoom: FC<T_ChatRoomProps> = ({ username, userAvatar, onLogoutClickHandler }) => {
   const [socket, setSocket] = useState<Socket>()
   const [messages, setMessage] = useState<T_Message[]>([])
+  const [typingUser, setTyping] = useState<string | null>(null)
 
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
@@ -18,9 +19,18 @@ const ChatRoom: FC<T_ChatRoomProps> = ({ username, onLogoutClickHandler }) => {
     event.preventDefault()
 
     if (inputRef.current) {
-      socket?.emit('message', { username, message: inputRef.current.value })
+      socket?.emit('message', { username, userAvatar, message: inputRef.current.value })
       inputRef.current.value = ''
     }
+  }
+
+  const onInputFocus = () => {
+    socket?.emit('typing', username)
+  }
+
+  const onInputBlur = () => {
+    setTyping('')
+    socket?.emit('typing', '')
   }
 
   useEffect(() => {
@@ -58,6 +68,10 @@ const ChatRoom: FC<T_ChatRoomProps> = ({ username, onLogoutClickHandler }) => {
       }
     })
 
+    socket?.on('receive_typing', username => {
+      setTyping(username)
+    })
+
     socket?.on('receive_message', (data: T_Message) => {
       if (data) setMessage(prev => [...prev, data])
     })
@@ -71,26 +85,40 @@ const ChatRoom: FC<T_ChatRoomProps> = ({ username, onLogoutClickHandler }) => {
     }
   }, [messages])
 
+  useEffect(() => {
+    if (listRef.current) listRef.current.scroll({ top: listRef.current.scrollHeight, behavior: 'smooth' })
+  }, [typingUser])
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.wrapper__top}>
         <p>Chat Room</p>
       </div>
       <div className={styles.wrapper__middle}>
-        <div ref={listRef} about='' className={styles.wrapper__middle__inner}>
+        <div ref={listRef} className={styles.wrapper__middle__inner}>
           {messages.map(element => (
             <MessageBox
               key={element.id}
-              messageDate={new Date(element.date)}
+              avatar={element.userAvatar}
               message={element.message}
               joinedUsername={username}
               senderUsername={element.username}
+              messageDate={new Date(element.date)}
             />
           ))}
+          {typingUser !== username && typingUser && (
+            <p className={styles.wrapper__middle__inner__typing}>{typingUser} is typing</p>
+          )}
         </div>
       </div>
       <form className={styles.wrapper__bottom} onSubmit={onMessageSubmit}>
-        <input ref={inputRef} className={styles.wrapper__bottom__input} placeholder='Type a message' />
+        <input
+          ref={inputRef}
+          onFocus={onInputFocus}
+          onBlur={onInputBlur}
+          className={styles.wrapper__bottom__input}
+          placeholder='Type a message'
+        />
         <button className={styles.wrapper__bottom__button} type='submit'>
           Send
         </button>

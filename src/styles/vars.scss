@@ -27,9 +27,21 @@
   align-items: flex-start;
 }
 
+%flex-start-align {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 %flex-justify-center {
   display: flex;
   justify-content: center;
+}
+
+%flex-end {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
 }
 
 %flex-justify-between {

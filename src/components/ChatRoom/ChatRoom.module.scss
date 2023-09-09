@@ -23,6 +23,10 @@
       overflow-y: auto;
       height: 300px;
 
+      &__typing {
+        color: $orange-light;
+      }
+
       &::-webkit-scrollbar {
         width: 5px;
       }

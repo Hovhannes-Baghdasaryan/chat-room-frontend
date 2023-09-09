@@ -4,10 +4,15 @@
 .wrapper {
   gap: 10px;
   color: #fff;
-  @extend %flex-column-start-align;
+  @extend %flex-end;
+  flex-direction: row-reverse;
+
+  &__avatar {
+    border-radius: 50%;
+  }
 
   &__own__message {
-    align-items: flex-end;
+    flex-direction: row;
   }
 
   &__inner {
