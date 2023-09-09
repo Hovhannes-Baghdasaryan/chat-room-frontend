@@ -5,6 +5,7 @@ import { MessageBox } from 'components'
 
 import { T_ChatRoomProps, T_Message } from './types'
 import styles from './ChatRoom.module.scss'
+import { axiosInstance } from 'libraries'
 
 const ChatRoom: FC<T_ChatRoomProps> = ({ username, onLogoutClickHandler }) => {
   const [socket, setSocket] = useState<Socket>()
@@ -23,10 +24,18 @@ const ChatRoom: FC<T_ChatRoomProps> = ({ username, onLogoutClickHandler }) => {
   }
 
   useEffect(() => {
+    const fetchMessage = async () => {
+      const { data } = await axiosInstance.get('messages')
+
+      setMessage(data)
+    }
+
     let mount = true
 
     const socket = io('ws://localhost:8000')
     setSocket(socket)
+
+    fetchMessage()
 
     return () => {
       mount = false
@@ -72,7 +81,7 @@ const ChatRoom: FC<T_ChatRoomProps> = ({ username, onLogoutClickHandler }) => {
           {messages.map(element => (
             <MessageBox
               key={element.id}
-              messageDate={element.date}
+              messageDate={new Date(element.date)}
               message={element.message}
               joinedUsername={username}
               senderUsername={element.username}
