@@ -2,30 +2,39 @@
 @import 'styles/colors';
 
 .form {
-  gap: 10px;
+  gap: 30px;
   min-width: 30%;
   @extend %flex-column;
 
-  &__upload {
-    background-color: $orange-light;
-    padding: 10px;
+  &__error {
+    color: $red-dark;
+  }
 
-    width: fit-content;
+  &__inner {
+    display: flex;
+    gap: 10px;
 
-    &__label {
-      cursor: pointer;
-      border-radius: 50%;
+    &__upload {
+      padding: 10px;
+      width: fit-content;
+      border-radius: 4px;
+      background-color: $orange-light;
+
+      &__label {
+        cursor: pointer;
+      }
+
+      &__input {
+        display: none;
+      }
     }
 
     &__input {
-      display: none;
+      width: 100%;
+      padding: 10px;
+      border-radius: 4px;
+      border: none;
     }
-  }
-
-  &__input {
-    padding: 10px;
-    border-radius: 4px;
-    border: none;
   }
 
   &__button {
@@ -33,5 +42,10 @@
     color: $white-dark;
     border-radius: 4px;
     padding: 5px 10px;
+
+    &:disabled {
+      background-color: $background-secondary;
+      color: $blue-dark;
+    }
   }
 }

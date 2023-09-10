@@ -1,16 +1,17 @@
 import { FC, useEffect, useRef, useState } from 'react'
 import io, { Socket } from 'socket.io-client'
 
-import { MessageBox } from 'components'
 import { axiosInstance } from 'libraries'
+import { MessageBox, Skeleton } from 'components'
 
 import { T_ChatRoomProps, T_Message } from './types'
 import styles from './ChatRoom.module.scss'
 
 const ChatRoom: FC<T_ChatRoomProps> = ({ username, userAvatar, onLogoutClickHandler }) => {
   const [socket, setSocket] = useState<Socket>()
-  const [messages, setMessage] = useState<T_Message[]>([])
   const [typingUser, setTyping] = useState<string | null>(null)
+  const [messages, setMessage] = useState<T_Message[]>([])
+  const [loading, setLoading] = useState(false)
 
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
@@ -29,15 +30,20 @@ const ChatRoom: FC<T_ChatRoomProps> = ({ username, userAvatar, onLogoutClickHand
   }
 
   const onInputBlur = () => {
-    setTyping('')
     socket?.emit('typing', '')
   }
 
   useEffect(() => {
     const fetchMessage = async () => {
-      const { data } = await axiosInstance.get('messages')
+      try {
+        setLoading(true)
+        const { data } = await axiosInstance.get('messages')
+        setLoading(false)
 
-      setMessage(data)
+        setMessage(data)
+      } catch (err) {
+        setLoading(false)
+      }
     }
 
     let mount = true
@@ -86,7 +92,9 @@ const ChatRoom: FC<T_ChatRoomProps> = ({ username, userAvatar, onLogoutClickHand
   }, [messages])
 
   useEffect(() => {
-    if (listRef.current) listRef.current.scroll({ top: listRef.current.scrollHeight, behavior: 'smooth' })
+    if (listRef.current) {
+      listRef.current.scroll({ top: listRef.current.scrollHeight, behavior: 'smooth' })
+    }
   }, [typingUser])
 
   return (
@@ -94,20 +102,26 @@ const ChatRoom: FC<T_ChatRoomProps> = ({ username, userAvatar, onLogoutClickHand
       <div className={styles.wrapper__top}>
         <p>Chat Room</p>
       </div>
+
       <div className={styles.wrapper__middle}>
         <div ref={listRef} className={styles.wrapper__middle__inner}>
-          {messages.map(element => (
-            <MessageBox
-              key={element.id}
-              avatar={element.userAvatar}
-              message={element.message}
-              joinedUsername={username}
-              senderUsername={element.username}
-              messageDate={new Date(element.date)}
-            />
-          ))}
+          {!loading
+            ? messages.map(element => (
+                <MessageBox
+                  key={element.id}
+                  avatar={element.userAvatar}
+                  message={element.message}
+                  joinedUsername={username}
+                  senderUsername={element.username}
+                  messageDate={new Date(element.date)}
+                />
+              ))
+            : [1, 2, 3, 4, 5].map(element => (
+                <Skeleton key={element} className={styles.wrapper__middle__inner__loading} />
+              ))}
+
           {typingUser !== username && typingUser && (
-            <p className={styles.wrapper__middle__inner__typing}>{typingUser} is typing</p>
+            <p className={styles.wrapper__middle__inner__typing}>{typingUser} is typing...</p>
           )}
         </div>
       </div>

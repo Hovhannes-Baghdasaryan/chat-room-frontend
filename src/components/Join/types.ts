@@ -1,5 +1,6 @@
+import { T_SetState } from 'types'
+
 export type T_JoinProps = {
-  filePreview: string
-  onSubmitHandler: (event: React.FormEvent<HTMLFormElement>) => void
-  onChangeFile: (event: React.ChangeEvent<HTMLInputElement>) => void
+  setAvatar: T_SetState<string>
+  setUsername: T_SetState<string>
 }

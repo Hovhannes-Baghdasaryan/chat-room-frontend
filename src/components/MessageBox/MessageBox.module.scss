@@ -7,6 +7,14 @@
   @extend %flex-end;
   flex-direction: row-reverse;
 
+  &__loading {
+    span {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+  }
+
   &__avatar {
     border-radius: 50%;
   }
