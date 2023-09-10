@@ -46,4 +46,4 @@
 
 # Chat Room on typing Phase
 
-<img src="https://i.ibb.co/R21B3X3/Screenshot-2023-09-10-144257.png" width="600px" height="400px">
+<img src="https://i.ibb.co/QHssdzm/Screenshot-2023-09-10-145021.png" width="600px" height="400px">
