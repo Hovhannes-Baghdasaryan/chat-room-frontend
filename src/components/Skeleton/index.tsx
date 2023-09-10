@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import classNames from 'classnames'
 
 import { T_SkeletonProps } from './types'
 import styles from './Skeleton.module.scss'

@@ -29,5 +29,9 @@
     color: $yellow-dark;
     font-size: 18px;
     padding-right: 60px;
+
+    @media (max-width: 600px) {
+      display: none;
+    }
   }
 }

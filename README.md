@@ -1,13 +1,13 @@
 ### ensure your node version is 16 or higher
 
-### `npm install` to install dependencies
+### `yarn install` to install dependencies
 
-### npm start
+### yarn start
 
-# used Redux Toolkit for API fetching and store management
+# used Socket.IO package for real-time communication
 
 # used axios for data fetching
 
-# used scss and classnames package for styling used pure styling without any premade ui-kit
+# used scss and classnames package for styling
 
-# used useWindowSize package for response handling
+# used useWindowSize package for mobile view handling
