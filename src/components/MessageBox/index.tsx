@@ -8,7 +8,7 @@ import { T_MessageBoxProps } from './types'
 import Skeleton from 'components/Skeleton'
 
 const MessageBox: FC<T_MessageBoxProps> = ({ joinedUsername, senderUsername, message, avatar, messageDate }) => {
-  const [load, setLoad] = useState(false)
+  const [isLoad, setIsLoad] = useState(false)
 
   const isSameUser = useMemo(() => joinedUsername === senderUsername, [joinedUsername, senderUsername])
 
@@ -26,15 +26,15 @@ const MessageBox: FC<T_MessageBoxProps> = ({ joinedUsername, senderUsername, mes
         <p>{message}</p>
         <p className={styles.wrapper__inner__date}>{formatTime(messageDate)}</p>
       </div>
-      {!load && <Skeleton className={styles.wrapper__loading} />}
+      {!isLoad && <Skeleton className={styles.wrapper__loading} />}
       <img
         className={styles.wrapper__avatar}
-        onLoad={() => setLoad(true)}
+        onLoad={() => setIsLoad(true)}
         src={avatar}
         loading='lazy'
         alt='user avatar'
-        width={load ? 40 : 0}
-        height={load ? 40 : 0}
+        width={isLoad ? 40 : 0}
+        height={isLoad ? 40 : 0}
       />
     </div>
   )

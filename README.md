@@ -24,6 +24,8 @@
 
 # --- added typing function so end-user can see who is typing at the moment
 
+# --- added error handling for losing network
+
 # Join Room
 
 <img src="https://i.ibb.co/bzVKpK7/Screenshot-2023-09-10-142722.png" width="600px" height="300px">

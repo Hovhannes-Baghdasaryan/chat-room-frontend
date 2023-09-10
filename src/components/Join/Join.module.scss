@@ -10,6 +10,10 @@
     color: $red-dark;
   }
 
+  &__preview__image {
+    border-radius: 50%;
+  }
+
   &__inner {
     display: flex;
     gap: 10px;

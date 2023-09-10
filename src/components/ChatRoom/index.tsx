@@ -12,6 +12,7 @@ const ChatRoom: FC<T_ChatRoomProps> = ({ username, userAvatar, onLogoutClickHand
   const [typingUser, setTyping] = useState<string | null>(null)
   const [messages, setMessage] = useState<T_Message[]>([])
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
@@ -20,7 +21,7 @@ const ChatRoom: FC<T_ChatRoomProps> = ({ username, userAvatar, onLogoutClickHand
     event.preventDefault()
 
     if (inputRef.current) {
-      socket?.emit('message', { username, userAvatar, message: inputRef.current.value })
+      socket?.emit('message', { username, userAvatar, message: inputRef.current.value.trim() })
       inputRef.current.value = ''
     }
   }
@@ -68,6 +69,10 @@ const ChatRoom: FC<T_ChatRoomProps> = ({ username, userAvatar, onLogoutClickHand
   // to check if we have multiple tabs with the same username logout all sessions with socket
 
   useEffect(() => {
+    socket?.on('connect_error', () => {
+      setError('Network Lost')
+    })
+
     socket?.on('leave_room', data => {
       if (data === username) {
         onLogoutClickHandler()
@@ -120,19 +125,24 @@ const ChatRoom: FC<T_ChatRoomProps> = ({ username, userAvatar, onLogoutClickHand
                 <Skeleton key={element} className={styles.wrapper__middle__inner__loading} />
               ))}
 
+          {error && !loading && <p className={styles.wrapper__middle__inner__error}>{error}</p>}
+
           {typingUser !== username && typingUser && (
             <p className={styles.wrapper__middle__inner__typing}>{typingUser} is typing...</p>
           )}
         </div>
       </div>
+
       <form className={styles.wrapper__bottom} onSubmit={onMessageSubmit}>
         <input
+          required
           ref={inputRef}
           onFocus={onInputFocus}
           onBlur={onInputBlur}
           className={styles.wrapper__bottom__input}
           placeholder='Type a message'
         />
+
         <button className={styles.wrapper__bottom__button} type='submit'>
           Send
         </button>

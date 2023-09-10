@@ -7,9 +7,10 @@ import { T_JoinProps } from './types'
 
 const Join: FC<T_JoinProps> = ({ setAvatar, setUsername }) => {
   const [file, setFile] = useState<File>()
-  const [loading, setLoading] = useState(false)
   const [filePreview, setFilePreview] = useState('')
   const [filePreviewError, setFilePreviewError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -38,6 +39,7 @@ const Join: FC<T_JoinProps> = ({ setAvatar, setUsername }) => {
       } catch (err: any) {
         setLoading(false)
         setFilePreviewError(err?.response?.data?.message)
+        setError('Network Lost')
       }
     }
 
@@ -67,8 +69,9 @@ const Join: FC<T_JoinProps> = ({ setAvatar, setUsername }) => {
           <input onChange={onChangeFile} className={styles.form__inner__upload__input} type='file' id='imageUpload' />
         </div>
       </div>
-      {filePreview && <img style={{ borderRadius: '50%' }} src={filePreview} width={70} height={70} />}
+      {filePreview && <img className={styles.form__preview__image} src={filePreview} width={70} height={70} />}
       {filePreviewError && <p className={styles.form__error}>{filePreviewError}</p>}
+      {error && <p className={styles.form__error}>{error}</p>}
       <button disabled={loading} className={styles.form__button} type='submit'>
         Join
       </button>
